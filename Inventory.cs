@@ -61,7 +61,7 @@ namespace InventoryManagementSystem
                     return;
                 }
             }
-            Console.WriteLine($"{name} product not found!");
+            Console.WriteLine($"{name} product not found :( ");
         }
 
         public void DeleteProduct(string name)
@@ -75,7 +75,7 @@ namespace InventoryManagementSystem
                     return;
 
                 }
-            } Console.WriteLine($"{name} product not found!");
+            } Console.WriteLine($"{name} product not found :( ");
         }
 
         public void SearchForProduct(string name)
@@ -90,8 +90,13 @@ namespace InventoryManagementSystem
 
                 }
             }
-            Console.WriteLine($"{name} product not found!");
+            Console.WriteLine($"{name} product not found :(");
         }
 
+        public void Exit()
+        {
+            Console.WriteLine("Exiting, BYEEEEEE");
+            Environment.Exit(0);
+        }
     }
 }
