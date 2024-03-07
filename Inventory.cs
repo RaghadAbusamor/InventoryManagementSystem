@@ -61,7 +61,21 @@ namespace InventoryManagementSystem
                     return;
                 }
             }
-            Console.WriteLine("Product not found!");
+            Console.WriteLine($"{name} product not found!");
+        }
+
+        public void DeleteProduct(string name)
+        {
+            for (int i = 0; i < listOfProducts.Count; i++)
+            {
+                if (listOfProducts[i].Name == name)
+                {
+                    listOfProducts.RemoveAt(i);
+                    Console.WriteLine("Product deleted!");
+                    return;
+
+                }
+            } Console.WriteLine($"{name} product not found!");
         }
 
     }
