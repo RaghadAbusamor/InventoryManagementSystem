@@ -12,6 +12,7 @@ namespace InventoryManagementSystem
             inventory.AddProduct("Product 22", 12.99, 120);
             inventory.ViewAllProducts();
             inventory.EditProduct("Product 11");
+            inventory.SearchForProduct("Product 22");
 
         }
     }

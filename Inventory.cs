@@ -78,5 +78,20 @@ namespace InventoryManagementSystem
             } Console.WriteLine($"{name} product not found!");
         }
 
+        public void SearchForProduct(string name)
+        {
+
+            for (int i = 0; i < listOfProducts.Count; i++)
+            {
+                if (listOfProducts[i].Name == name)
+                {
+                    Console.WriteLine($"Name: {listOfProducts[i].Name}, Price: {listOfProducts[i].Price}, Quantity: {listOfProducts[i].QuantityInStock}");
+                    return;
+
+                }
+            }
+            Console.WriteLine($"{name} product not found!");
+        }
+
     }
 }
