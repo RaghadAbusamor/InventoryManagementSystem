@@ -8,9 +8,9 @@ namespace InventoryManagementSystem
 {
     public class Product
     {
-        public string Name { get; private set; }
-        public double Price { get; private set; }
-        public int QuantityInStock { get; private set; }
+        public string Name { get; set; }
+        public double Price { get; set; }
+        public int QuantityInStock { get; set; }
 
         public Product(string name, double price, int quantityInStock)
         {
