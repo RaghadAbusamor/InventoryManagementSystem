@@ -20,10 +20,7 @@ namespace InventoryManagementSystem
         }
     }
 
-    public class Inventory
-    {
-            private List<Product> listOfProducts = new List<Product>();
-    }
+
 
 
 
