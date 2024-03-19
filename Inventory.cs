@@ -10,33 +10,52 @@ namespace InventoryManagementSystem
 {
     public class Inventory
     {
-        private List<Product> listOfProducts = new List<Product>();
+        private List<Product> Products  = new List<Product>();
 
-        public void AddProduct(string name, double price, int quantity)
+        public void AddProduct()
         {
-            listOfProducts.Add(new Product(name, price, quantity));
-            Console.WriteLine($"Whooooh! A new Product added with name: {name}, price: {price}, and quantity: {quantity}");
+            Console.Write("Enter the name of the product: ");
+            string? name = Console.ReadLine();
 
+            Console.Write("Enter the price of the product: ");
+            double price;
+            while (!double.TryParse(Console.ReadLine(), out price))
+            {
+                Console.WriteLine("Invalid input! Please enter a valid price.");
+            }
+
+            Console.Write("Enter the quantity of the product: ");
+            int quantity;
+            while (!int.TryParse(Console.ReadLine(), out quantity))
+            {
+                Console.WriteLine("Invalid input! Please enter a valid quantity.");
+            }
+
+            Products.Add(new Product(name, price, quantity));
+            Console.WriteLine($"Whooooh! A new Product added with name: {name}, price: {price}, and quantity: {quantity}");
         }
         public void ViewAllProducts()
         {
-            int listSize = listOfProducts.Count;
+            int listSize = Products.Count;
             Console.WriteLine($"\n We have {listSize} products in our inventory\n");
             Console.WriteLine("--------------------------------------------------------------------");
             Console.WriteLine("|       Name       |       Price       |       Quantity       |");
             Console.WriteLine("--------------------------------------------------------------------");
-            foreach (Product product in listOfProducts)
+            foreach (Product product in Products )
             {
                 Console.WriteLine($"| {product.Name,-15} | {product.Price,-17} | {product.QuantityInStock,-20} |");
             }
             Console.WriteLine("--------------------------------------------------------------------");
         }
 
-        public void EditProduct(string name)
+        public void EditProduct()
         {
-            foreach (Product product in listOfProducts)
+            Console.Write("Enter the name of the product to edit: ");
+            string? name = Console.ReadLine();
+
+            foreach (Product product in Products)
             {
-                if (product.Name == name)
+                if (product.Name.Equals(name))
                 {
                     Console.WriteLine("Enter the new name of the product:");
                     product.Name = Console.ReadLine();
@@ -64,13 +83,17 @@ namespace InventoryManagementSystem
             Console.WriteLine($"{name} product not found :( ");
         }
 
-        public void DeleteProduct(string name)
+
+        public void DeleteProduct()
         {
-            for (int i = 0; i < listOfProducts.Count; i++)
+            Console.Write("Enter the name of the product to delete: ");
+            string? name = Console.ReadLine();
+
+            for (int i = 0; i < Products.Count; i++)
             {
-                if (listOfProducts[i].Name == name)
+                if (Products[i].Name.Equals(name))
                 {
-                    listOfProducts.RemoveAt(i);
+                    Products.RemoveAt(i);
                     Console.WriteLine("Product deleted!");
                     return;
 
@@ -78,14 +101,15 @@ namespace InventoryManagementSystem
             } Console.WriteLine($"{name} product not found :( ");
         }
 
-        public void SearchForProduct(string name)
+        public void SearchForProduct()
         {
-
-            for (int i = 0; i < listOfProducts.Count; i++)
+            Console.Write("Enter the name of the product to edit: ");
+            string? name = Console.ReadLine();
+            for (int i = 0; i < Products.Count; i++)
             {
-                if (listOfProducts[i].Name == name)
+                if (Products[i].Name.Equals(name))
                 {
-                    Console.WriteLine($"Name: {listOfProducts[i].Name}, Price: {listOfProducts[i].Price}, Quantity: {listOfProducts[i].QuantityInStock}");
+                    Console.WriteLine($"Name: {Products[i].Name}, Price: {Products[i].Price}, Quantity: {Products[i].QuantityInStock}");
                     return;
 
                 }

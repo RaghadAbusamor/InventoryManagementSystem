@@ -19,9 +19,4 @@ namespace InventoryManagementSystem
             QuantityInStock = quantityInStock;
         }
     }
-
-
-
-
-
 }
