@@ -17,29 +17,39 @@ namespace InventoryManagementSystem
     public class Inventory
     {
         private List<Product> Products  = new List<Product>();
-
         public void AddProduct()
         {
-            Console.Write("Enter the name of the product: ");
-            string name = Console.ReadLine();
- 
-            Console.Write("Enter the price of the product: ");
-            double price;
-            while (!double.TryParse(Console.ReadLine(), out price))
-            {
-                Console.WriteLine("Invalid input! Please enter a valid price.");
-            }
+            try {
+                Console.Write("Enter the name of the product: ");
+                string name = Console.ReadLine();
 
-            Console.Write("Enter the quantity of the product: ");
-            int quantity;
-            while (!int.TryParse(Console.ReadLine(), out quantity))
-            {
-                Console.WriteLine("Invalid input! Please enter a valid quantity.");
-            }
+                if (string.IsNullOrWhiteSpace(name))
+                {
+                    throw new ProductsException("Product name cannot be empty");
+                }
 
-            Products.Add(new Product(name, price, quantity));
-            Console.WriteLine($"Whooooh! A new Product added with name: {name}, price: {price}, and quantity: {quantity}");
-        }
+                Console.Write("Enter the price of the product: ");
+                double price;
+                while (!double.TryParse(Console.ReadLine(), out price))
+                {
+                    Console.WriteLine("Invalid input! Please enter a valid price.");
+                }
+
+                Console.Write("Enter the quantity of the product: ");
+                int quantity;
+                while (!int.TryParse(Console.ReadLine(), out quantity))
+                {
+                    Console.WriteLine("Invalid input! Please enter a valid quantity.");
+                }
+
+                Products.Add(new Product(name, price, quantity));
+                Console.WriteLine($"Whooooh! A new Product added with name: {name}, price: {price}, and quantity: {quantity}");
+            }
+            catch (ProductsException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            }
         public void ViewAllProducts()
         {
             try
@@ -67,38 +77,44 @@ namespace InventoryManagementSystem
 
         public void EditProduct()
         {
-            Console.Write("Enter the name of the product to edit: ");
-            string? name = Console.ReadLine();
+            try {
+                Console.Write("Enter the name of the product to edit: ");
+                string? name = Console.ReadLine();
 
-            foreach (Product product in Products)
-            {
-                if (product.Name.Equals(name))
+                foreach (Product product in Products)
                 {
-                    Console.WriteLine("Enter the new name of the product:");
-                    product.Name = Console.ReadLine();
-
-                    Console.WriteLine("Enter the new price of the product:");
-                    double price;
-                    while (!double.TryParse(Console.ReadLine(), out price))
+                    if (product.Name.Equals(name, StringComparison.Ordinal))
                     {
-                        Console.WriteLine("Invalid input, Please enter a valid price:");
-                    }
-                    product.Price = price;
+                        Console.WriteLine("Enter the new name of the product:");
+                        product.Name = Console.ReadLine();
 
-                    Console.WriteLine("Enter the new quantity of the product:");
-                    int quantity;
-                    while (!int.TryParse(Console.ReadLine(), out quantity))
-                    {
-                        Console.WriteLine("Invalid input, Please enter a valid quantity:");
-                    }
-                    product.QuantityInStock = quantity;
+                        Console.WriteLine("Enter the new price of the product:");
+                        double price;
+                        while (!double.TryParse(Console.ReadLine(), out price))
+                        {
+                            Console.WriteLine("Invalid input, Please enter a valid price:");
+                        }
+                        product.Price = price;
 
-                    Console.WriteLine("Product Edited successfully!");
-                    return;
+                        Console.WriteLine("Enter the new quantity of the product:");
+                        int quantity;
+                        while (!int.TryParse(Console.ReadLine(), out quantity))
+                        {
+                            Console.WriteLine("Invalid input, Please enter a valid quantity:");
+                        }
+                        product.QuantityInStock = quantity;
+
+                        Console.WriteLine("Product Edited successfully!");
+                        return;
+                    }
                 }
+                throw new ProductsException($"{name} product not found :(");
             }
-            throw new ProductsException($"{name} product not found :(");
-        }
+            catch(ProductsException ex)
+            {
+                Console.WriteLine(ex.Message);  
+            }
+        }    
 
         public void DeleteProduct()
         {
@@ -109,7 +125,7 @@ namespace InventoryManagementSystem
 
                 for (int i = 0; i < Products.Count; i++)
                 {
-                    if (Products[i].Name.Equals(name))
+                    if (Products[i].Name.Equals(name, StringComparison.Ordinal))
                     {
                         Products.RemoveAt(i);
                         Console.WriteLine("Product deleted!");
@@ -118,28 +134,33 @@ namespace InventoryManagementSystem
                 }
                 throw new ProductsException($"{name} product not found :( ");
             }
-            catch(Exception e)
+            catch(ProductsException e)
             {
-                Console.WriteLine("catch");
+                Console.WriteLine(e.Message);
             }
         }
 
         public void SearchForProduct()
         {
-            Console.Write("Enter the name of the product to edit: ");
-            string? name = Console.ReadLine();
-            for (int i = 0; i < Products.Count; i++)
-            {
-                if (Products[i].Name.Equals(name))
+            try {
+                Console.Write("Enter the name of the product to edit: ");
+                string? name = Console.ReadLine();
+                for (int i = 0; i < Products.Count; i++)
                 {
-                    Console.WriteLine($"Name: {Products[i].Name}, Price: {Products[i].Price}, Quantity: {Products[i].QuantityInStock}");
-                    return;
+                    if (Products[i].Name.Equals(name, StringComparison.Ordinal))
+                    {
+                        Console.WriteLine($"Name: {Products[i].Name}, Price: {Products[i].Price}, Quantity: {Products[i].QuantityInStock}");
+                        return;
 
+                    }
                 }
+                throw new ProductsException($"{name} product not found :(");
             }
-            throw new ProductsException($"{name} product not found :(");
+            catch (ProductsException e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
-
         public void Exit()
         {
             Console.WriteLine("Exiting, BYEEEEEE");
