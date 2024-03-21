@@ -8,12 +8,6 @@ using System.Xml.Linq;
 
 namespace InventoryManagementSystem
 {
-    public class ProductsException : Exception
-    {
-        public ProductsException(string message) : base(message)
-        {
-        }
-    }
     public class Inventory
     {
         private List<Product> Products  = new List<Product>();
@@ -67,7 +61,10 @@ namespace InventoryManagementSystem
                     }
                     Console.WriteLine("--------------------------------------------------------------------");
                 }
-                throw new ProductsException("There is no product to view.");
+                else
+                {
+                    throw new ProductsException("There is no product to view.");
+                }
             }
             catch (ProductsException ex) 
             {
@@ -83,7 +80,7 @@ namespace InventoryManagementSystem
 
                 foreach (Product product in Products)
                 {
-                    if (product.Name.Equals(name, StringComparison.Ordinal))
+                    if (product.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
                     {
                         Console.WriteLine("Enter the new name of the product:");
                         product.Name = Console.ReadLine();
@@ -125,7 +122,7 @@ namespace InventoryManagementSystem
 
                 for (int i = 0; i < Products.Count; i++)
                 {
-                    if (Products[i].Name.Equals(name, StringComparison.Ordinal))
+                    if (Products[i].Name.Equals(name, StringComparison.OrdinalIgnoreCase))
                     {
                         Products.RemoveAt(i);
                         Console.WriteLine("Product deleted!");
@@ -147,7 +144,7 @@ namespace InventoryManagementSystem
                 string? name = Console.ReadLine();
                 for (int i = 0; i < Products.Count; i++)
                 {
-                    if (Products[i].Name.Equals(name, StringComparison.Ordinal))
+                    if (Products[i].Name.Equals(name, StringComparison.OrdinalIgnoreCase))
                     {
                         Console.WriteLine($"Name: {Products[i].Name}, Price: {Products[i].Price}, Quantity: {Products[i].QuantityInStock}");
                         return;

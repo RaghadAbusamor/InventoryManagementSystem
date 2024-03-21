@@ -2,15 +2,6 @@
 
 namespace InventoryManagementSystem
 {
-    public enum Operation
-    {
-        Add = 1,
-        View,
-        Edit,
-        Delete,
-        Search,
-        Exit
-    }
     class Program
     {
         static void Main(string[] args)
@@ -30,29 +21,29 @@ namespace InventoryManagementSystem
                 Console.WriteLine("6. Exit");
 
                 Console.Write("Enter your choice: ");
-                if (!Enum.TryParse(Console.ReadLine(), out Operation choice) || !Enum.IsDefined(typeof(Operation), choice))
+                if (!Enum.TryParse(Console.ReadLine(), out Operations choice))
                 {
                     Console.WriteLine("Invalid input! Please enter a valid operation");
                     continue;
                 }
                 switch (choice)
                 {
-                    case Operation.Add:
+                    case Operations.Add:
                         inventory.AddProduct();
                         break;
-                    case Operation.View:
+                    case Operations.View:
                         inventory.ViewAllProducts();
                         break;
-                    case Operation.Edit:
+                    case Operations.Edit:
                         inventory.EditProduct();
                         break;
-                    case Operation.Delete:
+                    case Operations.Delete:
                          inventory.DeleteProduct();
                         break;
-                    case Operation.Search:
+                    case Operations.Search:
                         inventory.SearchForProduct();
                         break;
-                    case Operation.Exit:
+                    case Operations.Exit:
                         inventory.Exit();
                         break;
                     default:
