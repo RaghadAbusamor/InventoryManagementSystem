@@ -8,6 +8,5 @@
         Task EditProductPriceAsync(string? name, decimal newPrice);
         Task EditProductQuantityAsync(string? name, int newQuantity);
         Task<List<Product>> GetAllProductsAsync();
-        Task<bool> IsEmptyAsync();
     }
 }

@@ -18,7 +18,7 @@ namespace InventoryManagementSystem
 
         public async Task<bool> IsEmptyAsync()
         {
-            return await _repository.IsEmptyAsync();
+            return (await _repository.GetAllProductsAsync()).Count == 0;
         }
 
         public async Task<string> PrintAllProductsAsync()
@@ -42,7 +42,7 @@ namespace InventoryManagementSystem
             return allProducts.ToString();
         }
 
-        public async Task EditProductNameAsync(Product product, string newName)
+        public async Task EditProductNameAsync(Product product, string? newName)
         {
             await _repository.EditProductNameAsync(product.Name, newName);
         }
@@ -62,7 +62,7 @@ namespace InventoryManagementSystem
             await _repository.DeleteProductAsync(product.Name);
         }
 
-        public async Task<Product?> FindProductAsync(string productName)
+        public async Task<Product?> FindProductAsync(string? productName)
         {
             return (await _repository.GetAllProductsAsync())
                 .SingleOrDefault(product => product.Name == productName);

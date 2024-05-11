@@ -1,151 +1,48 @@
-﻿using System.Data.SqlClient;
+﻿using MongoDB.Driver;
 
 namespace InventoryManagementSystem
 {
-    public class DBOperations : SqlServerDatabaseInitializer, IProduct
+    public class DBOperations : IProduct
     {
+        private MongoClient _client;
+        private IMongoDatabase _database;
+        private IMongoCollection<Product> _productsCollection;
+
+        public DBOperations()
+        {
+            _client = new MongoClient(MongoDBConnection.MongoDbConnectionString);
+            _database = _client.GetDatabase(MongoDBConnection.databaseName);
+            _productsCollection = _database.GetCollection<Product>(MongoDBConnection.collectionName);
+        }
+
         public async Task AddProductAsync(Product newProduct)
         {
-            var query = $"""
-                INSERT INTO Products
-                VALUES (@{nameof(newProduct.Name)}, @{nameof(newProduct.Price)}, 
-                @{nameof(newProduct.Quantity)})
-                """;
-
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                await connection.OpenAsync();
-
-                using var sqlCommand = new SqlCommand(query, connection);
-                sqlCommand.Parameters.AddWithValue($"@{nameof(newProduct.Name)}", newProduct.Name);
-                sqlCommand.Parameters.AddWithValue($"@{nameof(newProduct.Price)}", newProduct.Price);
-                sqlCommand.Parameters.AddWithValue($"@{nameof(newProduct.Quantity)}", newProduct.Quantity);
-                await sqlCommand.ExecuteNonQueryAsync();
-            }
+            await _productsCollection.InsertOneAsync(newProduct);
         }
 
         public async Task EditProductNameAsync(string oldName, string newName)
         {
-            var query = $"""
-                UPDATE Products
-                SET name = @{nameof(newName)}
-                WHERE name = @{nameof(oldName)}
-                """;
-
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                await connection.OpenAsync();
-
-                using var sqlCommand = new SqlCommand(query, connection);
-                sqlCommand.Parameters.AddWithValue($"@{nameof(newName)}", newName);
-                sqlCommand.Parameters.AddWithValue($"@{nameof(oldName)}", oldName);
-                await sqlCommand.ExecuteNonQueryAsync();
-            }
+            var nameUpdate = Builders<Product>.Update.Set("Name", newName);
+            await _productsCollection.FindOneAndUpdateAsync(product => product.Name == oldName, nameUpdate);
         }
 
         public async Task EditProductPriceAsync(string productName, decimal newPrice)
         {
-            var query = $"""
-                UPDATE Products
-                SET price = @{nameof(newPrice)}
-                WHERE name = @{nameof(productName)}
-                """;
-
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                await connection.OpenAsync();
-
-                using var sqlCommand = new SqlCommand(query, connection);
-                sqlCommand.Parameters.AddWithValue($"@{nameof(newPrice)}", newPrice);
-                sqlCommand.Parameters.AddWithValue($"@{nameof(productName)}", productName);
-                await sqlCommand.ExecuteNonQueryAsync();
-            }
+            var priceUpdate = Builders<Product>.Update.Set("Price", newPrice);
+            await _productsCollection.FindOneAndUpdateAsync(product => product.Name == productName, priceUpdate);
         }
 
         public async Task EditProductQuantityAsync(string productName, int newQuantity)
         {
-            var query = $"""
-                UPDATE Products
-                SET quantity = @{nameof(newQuantity)}
-                WHERE name = @{nameof(productName)}
-                """;
-
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                await connection.OpenAsync();
-
-                using var sqlCommand = new SqlCommand(query, connection);
-                sqlCommand.Parameters.AddWithValue($"@{nameof(newQuantity)}", newQuantity);
-                sqlCommand.Parameters.AddWithValue($"@{nameof(productName)}", productName);
-                await sqlCommand.ExecuteNonQueryAsync();
-            }
+            var quantityUpdate = Builders<Product>.Update.Set("Quantity", newQuantity);
+            await _productsCollection.FindOneAndUpdateAsync(product => product.Name == productName, quantityUpdate);
         }
 
         public async Task DeleteProductAsync(string productName)
         {
-            var query = $"""
-                DELETE FROM Products
-                WHERE name = @{nameof(productName)}
-                """;
-
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                await connection.OpenAsync();
-
-                using var sqlCommand = new SqlCommand(query, connection);
-                sqlCommand.Parameters.AddWithValue($"@{nameof(productName)}", productName);
-                await sqlCommand.ExecuteNonQueryAsync();
-            }
+            await _productsCollection.DeleteOneAsync(product => product.Name == productName);
         }
 
-        public async Task<List<Product>> GetAllProductsAsync()
-        {
-            var query = "SELECT * FROM Products";
-            var products = new List<Product>();
-
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                await connection.OpenAsync();
-
-                using var sqlCommand = new SqlCommand(query, connection);
-                using var productsDataReader = sqlCommand.ExecuteReader();
-
-                while (productsDataReader.Read())
-                {
-                    products.Add(GetProductFromString(productsDataReader));
-                }
-            }
-
-            return products;
-        }
-
-        private static Product GetProductFromString(SqlDataReader productsDataReader)
-        {
-            var name = productsDataReader.GetString(0);
-            var price = (decimal)productsDataReader.GetDouble(1);
-            var quantity = productsDataReader.GetInt32(2);
-
-            return new Product(name, price, quantity);
-        }
-
-        public async Task<bool> IsEmptyAsync()
-        {
-            var query = "SELECT TOP 1 * FROM Products ";
-
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                await connection.OpenAsync();
-
-                using var sqlCommand = new SqlCommand(query, connection);
-                using var productsDataReader = sqlCommand.ExecuteReader();
-
-                if (productsDataReader.HasRows)
-                {
-                    return false;
-                }
-
-                return true;
-            }
-        }
+        public async Task<List<Product>> GetAllProductsAsync() => (await _productsCollection.FindAsync(_ => true)).ToList();
     }
 }
