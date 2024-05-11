@@ -6,13 +6,11 @@ using System.Threading.Tasks;
 
 namespace InventoryManagementSystem
 {
-    public enum Operations
+    public enum EditOptions
     {
-        Add = 1,
-        View = 2,
-        Edit = 3,
-        Delete = 4,
-        Search = 5,
-        Exit =6 
+        EditName = 1,
+        EditPrice = 2, 
+        EditQuantity = 3,
+        Cancel = 4
     }
 }
