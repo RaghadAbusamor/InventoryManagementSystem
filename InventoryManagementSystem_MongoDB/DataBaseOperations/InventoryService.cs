@@ -42,19 +42,21 @@ namespace InventoryManagementSystem
             return allProducts.ToString();
         }
 
-        public async Task EditProductNameAsync(Product product, string? newName)
-        {
-            await _repository.EditProductNameAsync(product.Name, newName);
-        }
 
         public async Task EditProductPriceAsync(Product product, decimal newPrice)
         {
             await _repository.EditProductPriceAsync(product.Name, newPrice);
         }
 
-        public async Task EditProductQuantityAsync(Product product, int newQuantity)
+        public async Task EditProductNameAsync(string productName, string? newName)
         {
-            await _repository.EditProductQuantityAsync(product.Name, newQuantity);
+            await _repository.EditProductNameAsync(productName, newName);
+        }
+
+        
+             public async Task EditProductQuantityAsync(string productName, int newQuantity)
+        {
+            await _repository.EditProductQuantityAsync(productName, newQuantity);
         }
 
         public async Task DeleteProductAsync(Product product)
