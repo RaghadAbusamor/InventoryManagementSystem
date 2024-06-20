@@ -157,7 +157,7 @@ namespace InventoryManagementSystem
                 case EditOptions.EditName:
                     Console.Write("Enter the new name: ");
                     var newName = Console.ReadLine();
-                    await _inventory.EditProductNameAsync(product, newName);
+                    await _inventory.EditProductNameAsync(product.Name, newName);
                     break;
 
                 case EditOptions.EditPrice:
@@ -168,7 +168,7 @@ namespace InventoryManagementSystem
                         Console.WriteLine("Invalid price.");
                         return;
                     }
-                    await _inventory.EditProductPriceAsync(product, newPrice);
+                    await _inventory.EditProductPriceAsync(product.Name, newPrice);
                     break;
 
                 case EditOptions.EditQuantity:
@@ -179,7 +179,7 @@ namespace InventoryManagementSystem
                         Console.WriteLine("Invalid quantity.");
                         return;
                     }
-                    await _inventory.EditProductQuantityAsync(product, newQuantity);
+                    await _inventory.EditProductQuantityAsync(product.Name, newQuantity);
                     break;
 
                 case EditOptions.Cancel:
