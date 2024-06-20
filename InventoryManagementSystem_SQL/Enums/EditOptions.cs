@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace InventoryManagementSystem
 {
-    public class ProductsException : Exception
+    public enum EditOptions
     {
-        public ProductsException(string message) : base(message)
-        {
-        }
+        EditName = 1,
+        EditPrice = 2, 
+        EditQuantity = 3,
+        Cancel = 4
     }
 }
