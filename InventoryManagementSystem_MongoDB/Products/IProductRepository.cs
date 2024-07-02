@@ -1,6 +1,6 @@
 ﻿namespace InventoryManagementSystem
 {
-    public interface IProduct
+    public interface IProductRepository
     {
         Task AddProductAsync(Product newProduct);
         Task DeleteProductAsync(string? name);

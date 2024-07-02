@@ -2,13 +2,13 @@
 
 namespace InventoryManagementSystem
 {
-    public class DBOperations : IProduct
+    public class DBRepository : IProductRepository
     {
         private MongoClient _client;
         private IMongoDatabase _database;
         private IMongoCollection<Product> _productsCollection;
 
-        public DBOperations()
+        public DBRepository()
         {
             _client = new MongoClient(MongoDBConnection.MongoDbConnectionString);
             _database = _client.GetDatabase(MongoDBConnection.databaseName);

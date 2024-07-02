@@ -3,11 +3,11 @@ namespace InventoryManagementSystem
 {
     public class InventoryManager
     {
-        private readonly InventoryService _inventory;
+        private readonly InventoryService _inventoryService;
 
         public InventoryManager(InventoryService inventory)
         {
-            _inventory = inventory;
+            _inventoryService = inventory;
         }
 
         public async Task RunAsync()
@@ -83,14 +83,14 @@ namespace InventoryManagementSystem
             var newProduct = new Product(productName, productPrice, productQuantity);
 
             if (newProduct.IsValid())
-                await _inventory.AddProductAsync(newProduct);
+                await _inventoryService.AddProductAsync(newProduct);
             else
                 Console.WriteLine("The values can't be negative.");
         }
 
         private async Task ViewAllProductsAsync()
         {
-            Console.WriteLine(await _inventory.PrintAllProductsAsync());
+            Console.WriteLine(await _inventoryService.PrintAllProductsAsync());
         }
 
         private async Task EditProductAsync()
@@ -98,7 +98,7 @@ namespace InventoryManagementSystem
             Console.Write("Name of a product to edit it: ");
             string productName = Console.ReadLine();
 
-            var product = await _inventory.FindProductAsync(productName);
+            var product = await _inventoryService.FindProductAsync(productName);
             if (product == null)
             {
                 Console.WriteLine("The product is not found.");
@@ -113,14 +113,14 @@ namespace InventoryManagementSystem
             Console.Write("Name of a product to delete it: ");
             string productName = Console.ReadLine();
 
-            var product = await _inventory.FindProductAsync(productName);
+            var product = await _inventoryService.FindProductAsync(productName);
             if (product == null)
             {
                 Console.WriteLine("The product is not found.");
                 return;
             }
 
-            await _inventory.DeleteProductAsync(product);
+            await _inventoryService.DeleteProductAsync(product);
         }
 
         private async Task SearchProductAsync()
@@ -128,7 +128,7 @@ namespace InventoryManagementSystem
             Console.Write("Name of a product to search for it: ");
             string productName = Console.ReadLine();
 
-            var product = await _inventory.FindProductAsync(productName);
+            var product = await _inventoryService.FindProductAsync(productName);
             if (product == null)
             {
                 Console.WriteLine("The product is not found.");
@@ -157,7 +157,7 @@ namespace InventoryManagementSystem
                 case EditOptions.EditName:
                     Console.Write("Enter the new name: ");
                     var newName = Console.ReadLine();
-                    await _inventory.EditProductNameAsync(product.Name, newName);
+                    await _inventoryService.EditProductNameAsync(product.Name, newName);
                     break;
 
                 case EditOptions.EditPrice:
@@ -168,7 +168,7 @@ namespace InventoryManagementSystem
                         Console.WriteLine("Invalid price.");
                         return;
                     }
-                    await _inventory.EditProductPriceAsync(product, newPrice);
+                    await _inventoryService.EditProductPriceAsync(product, newPrice);
                     break;
 
                 case EditOptions.EditQuantity:
@@ -179,7 +179,7 @@ namespace InventoryManagementSystem
                         Console.WriteLine("Invalid quantity.");
                         return;
                     }
-                    await _inventory.EditProductQuantityAsync(product.Name, newQuantity);
+                    await _inventoryService.EditProductQuantityAsync(product.Name, newQuantity);
                     break;
 
                 case EditOptions.Cancel:

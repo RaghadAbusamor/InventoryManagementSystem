@@ -4,9 +4,9 @@ namespace InventoryManagementSystem
 {
     public class InventoryService
     {
-        private IProduct _repository;
+        private IProductRepository _repository;
 
-        public InventoryService(IProduct repository)
+        public InventoryService(IProductRepository repository)
         {
             _repository = repository;
         }
