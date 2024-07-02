@@ -5,11 +5,11 @@ using InventoryManagementSystem_SQL.Model;
 
 namespace InventoryManagementSystem
 {
-    public class DBOperations : SqlServerDatabaseInitializer, IProduct
+    public class DBRepository : SqlServerDatabaseInitializer, IProductRepository
     {
         public async Task AddProductAsync(Product newProduct)
         {
-            var query = ProductCommands.InsertProduct();
+            var query = ProductCommands.InsertProduct;
 
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -25,7 +25,7 @@ namespace InventoryManagementSystem
 
         public async Task EditProductNameAsync(string oldName, string newName)
         {
-            var query = ProductCommands.UpdateProductName();
+            var query = ProductCommands.UpdateProductName;
 
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -40,7 +40,7 @@ namespace InventoryManagementSystem
 
         public async Task EditProductPriceAsync(string productName, decimal newPrice)
         {
-            var query = ProductCommands.UpdateProductPrice();
+            var query = ProductCommands.UpdateProductPrice;
 
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -55,7 +55,7 @@ namespace InventoryManagementSystem
 
         public async Task EditProductQuantityAsync(string productName, int newQuantity)
         {
-            var query = ProductCommands.UpdateProductQuantity();
+            var query = ProductCommands.UpdateProductQuantity;
 
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -70,7 +70,7 @@ namespace InventoryManagementSystem
 
         public async Task DeleteProductAsync(string productName)
         {
-            var query = ProductCommands.DeleteProduct();
+            var query = ProductCommands.DeleteProduct;
 
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -84,7 +84,7 @@ namespace InventoryManagementSystem
 
         public async Task<List<Product>> GetAllProductsAsync()
         {
-            var query = ProductQueries.GetAllProducts();
+            var query = ProductQueries.GetAllProducts;
             var products = new List<Product>();
 
             using (var connection = new SqlConnection(_connectionString))
@@ -105,16 +105,16 @@ namespace InventoryManagementSystem
 
         public async Task<bool> IsEmptyAsync()
         {
-            var query = ProductQueries.IsEmpty();
+            var query = ProductQueries.IsEmpty;
 
             using (var connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
 
                 using var sqlCommand = new SqlCommand(query, connection);
-                using var productsDataReader = await sqlCommand.ExecuteReaderAsync();
+                int count = (int)await sqlCommand.ExecuteScalarAsync();
 
-                return !productsDataReader.HasRows;
+                return count == 0;
             }
         }
 
