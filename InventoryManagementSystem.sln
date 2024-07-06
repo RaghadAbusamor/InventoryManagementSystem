@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InventoryManagementSystem", "InventoryManagementSystem\InventoryManagementSystem.csproj", "{A9B5923A-8867-4B32-9A0E-2E31670EFD0D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InventoryManagementSystem_SQL", "InventoryManagementSystem_SQL\InventoryManagementSystem_SQL.csproj", "{79CE963A-F288-4E32-9F5C-736ABDCE9048}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InventoryManagementSystem_MongoDB", "InventoryManagementSystem_MongoDB\InventoryManagementSystem_MongoDB.csproj", "{B935E60A-0B4D-4946-A270-E224E6757463}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
